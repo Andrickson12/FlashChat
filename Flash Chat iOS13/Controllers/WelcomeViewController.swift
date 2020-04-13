@@ -19,6 +19,8 @@ class WelcomeViewController: UIViewController {
        
     }
     
+    
+    
     func Animation() {
         //Empty titlelabel
         titleLabel.text = ""
