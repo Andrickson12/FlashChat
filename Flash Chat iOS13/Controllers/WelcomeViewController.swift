@@ -15,11 +15,9 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       Animation()
+        Animation()
+       
     }
-    
-    
-    
     
     func Animation() {
         //Empty titlelabel
