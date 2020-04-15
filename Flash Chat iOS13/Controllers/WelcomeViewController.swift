@@ -29,7 +29,7 @@ class WelcomeViewController: UIViewController {
         var characterIndex = 0.0
         
         //Constant
-        let titleText = "⚡️FlashChat"
+        let titleText = K.appName
         
         //For loop
         for letter in titleText {

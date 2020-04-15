@@ -26,9 +26,10 @@ class RegisterViewController: UIViewController {
                     
                     //Function
                     self.alerta(title: "Something went wrong", message: e.localizedDescription)
+                    
                 }else{
                     //Navigate to the ChatViewController
-                    self.performSegue(withIdentifier: "RegisterToChat", sender: self)
+                    self.performSegue(withIdentifier: K.registerSegue, sender: self)
                 }
             }
         }
