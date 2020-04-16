@@ -33,6 +33,9 @@ class ChatViewController: UIViewController {
         //Hides the back button
         navigationItem.hidesBackButton = true
         
+        //Registering the xib file to allow custom cell
+        tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
@@ -56,14 +59,13 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController: UITableViewDataSource {
     
-    //2
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return message.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
-        cell.textLabel?.text = message[indexPath.row].body
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
+        cell.label.text = message[indexPath.row].body
         return cell
     }
 }
