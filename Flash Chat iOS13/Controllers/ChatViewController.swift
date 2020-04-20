@@ -19,12 +19,7 @@ class ChatViewController: UIViewController {
     
     
     //THIS IS WHERE ALL THE CHAT THING STARTED
-    let message: [Message] = [
-        Message(sender: "1@2.com", body: "Hey!"),
-        Message(sender: "a@b.com", body: "Hello!"),
-        Message(sender: "1@2.com", body: "What's up?")
-        
-    ]
+    var messages: [Message] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +34,43 @@ class ChatViewController: UIViewController {
         
         //Registering the xib file to allow custom cell
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        
+        loadMessages()
+        
+    }
+    
+    func loadMessages(){
+        //Clear the messages array
+        messages = []
+        
+        db.collection(K.FStore.collectionName).getDocuments { (querySnapshot, error) in
+            if let e = error {
+                print("There was an issue retrieving data from firestore. \(e)")
+            }else{
+                //Optional binding obviously
+                if let snapshotDocuments = querySnapshot?.documents {
+                    
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        
+                        //Down Casting
+                        if let messageSender = data[K.FStore.senderField] as? String, let messageBody = data[K.FStore.bodyField] as? String {
+                            
+                            //Putting a new sender and body to the Message Struct
+                            let newMessage = Message(sender: messageSender, body: messageBody)
+                            
+                            //Adding 'newMessage' to 'messages' array
+                            self.messages.append(newMessage)
+                            
+                            //Tap into the tableview and trigger those data source method again(updating the table view) it is a good practice to put it inside a Dispatch instead of without
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
     }
     
@@ -74,12 +106,12 @@ class ChatViewController: UIViewController {
 extension ChatViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return message.count
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
-        cell.label.text = message[indexPath.row].body
+        cell.label.text = messages[indexPath.row].body
         return cell
     }
 }
