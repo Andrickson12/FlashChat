@@ -12,14 +12,26 @@ class WelcomeViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     
+    //Hidding the navigation controller top part when the app first load
+    override func viewWillAppear(_ animated: Bool) {
+        //Calling super because we are overriding a function from the superclass, it is a good practice
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    //Unhidden the navigation controller top part after moving on from the one we hide it
+    override func viewWillDisappear(_ animated: Bool) {
+        //Calling super because we are overriding a function from the superclass, it is a good practice
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         Animation()
        
     }
-    
-    
     
     func Animation() {
         //Empty titlelabel
